@@ -276,57 +276,57 @@
 <context>
     <name>PresetDialog</name>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="53"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="56"/>
         <source>Edit preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="53"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="56"/>
         <source>New preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="66"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="69"/>
         <source>Choose photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="70"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="73"/>
         <source>Take photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="77"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="80"/>
         <source>Search online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="103"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="106"/>
         <source>Remove photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="111"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="114"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="120"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="123"/>
         <source>Brand, optional</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="121"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="124"/>
         <source>Brand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="129"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="132"/>
         <source>Size in ml</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetDialog.qml" line="140"/>
+        <location filename="../qml/pages/PresetDialog.qml" line="143"/>
         <source>Alcohol in %</source>
         <translation type="unfinished"></translation>
     </message>
@@ -334,17 +334,17 @@
 <context>
     <name>PresetStore</name>
     <message>
-        <location filename="../src/presetstore.cpp" line="274"/>
+        <location filename="../src/presetstore.cpp" line="279"/>
         <source>Beer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/presetstore.cpp" line="275"/>
+        <location filename="../src/presetstore.cpp" line="280"/>
         <source>Wine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/presetstore.cpp" line="276"/>
+        <location filename="../src/presetstore.cpp" line="281"/>
         <source>Shot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -383,11 +383,16 @@
     </message>
     <message>
         <location filename="../qml/pages/PresetsPage.qml" line="46"/>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="50"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="97"/>
+        <location filename="../qml/pages/PresetsPage.qml" line="101"/>
         <source>Photos from Open Food Facts, CC BY-SA</source>
         <translation type="unfinished"></translation>
     </message>

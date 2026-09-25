@@ -43,6 +43,10 @@ Page {
                     onClicked: pageStack.push(Qt.resolvedUrl("PresetDialog.qml"), { presetId: model.presetId })
                 }
                 MenuItem {
+                    text: qsTr("Duplicate")
+                    onClicked: pageStack.push(Qt.resolvedUrl("PresetDialog.qml"), { copyOf: model.presetId })
+                }
+                MenuItem {
                     text: qsTr("Remove")
                     onClicked: {
                         var presetId = model.presetId

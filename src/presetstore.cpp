@@ -127,6 +127,11 @@ QString PresetStore::savePreset(const QString &presetId, const QString &name, co
             preset.image = oldImage;
         if (imageUrl.toLocalFile().startsWith(captureDirectoryPath() + QLatin1Char('/')))
             QFile::remove(imageUrl.toLocalFile());
+    } else if (!image.isEmpty() && image != oldImage) {
+        // Another preset's photo, as when duplicating. Each gets its own file,
+        // removing one preset removes its photo.
+        const QString copy = newImagePath(preset.id);
+        preset.image = QFile::copy(QUrl(image).toLocalFile(), copy) ? QUrl::fromLocalFile(copy).toString() : QString();
     } else {
         preset.image = image;
     }

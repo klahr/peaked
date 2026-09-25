@@ -7,6 +7,8 @@ Dialog {
 
     // Empty for a new preset, otherwise the preset being edited
     property string presetId
+    // For a new preset, a preset to start from, as when duplicating
+    property string copyOf
     // A local file, or a URL from the search that is downloaded when saving
     property string image
 
@@ -29,9 +31,10 @@ Dialog {
     }
 
     Component.onCompleted: {
-        if (presetId.length === 0)
+        var from = presetId.length > 0 ? presetId : copyOf
+        if (from.length === 0)
             return
-        var preset = presetStore.preset(presetId)
+        var preset = presetStore.preset(from)
         image = preset.image
         nameField.text = preset.name
         brandField.text = preset.brand
