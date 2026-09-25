@@ -73,7 +73,9 @@ ApplicationWindow {
         onTriggered: {
             bloodAlcohol.update()
             if (sessionLog.morningPending && !sessionLog.morningNotified) {
-                morningNotification.body = qsTr("After an evening of %1").arg(Display.exposure(sessionLog.morningExposure))
+                morningNotification.body = Display.evening(sessionLog.morningStart, sessionLog.morningEnd,
+                                                           sessionLog.morningGrams, sessionLog.morningExposure,
+                                                           advisor.standardDrinkGrams)
                 morningNotification.previewBody = morningNotification.body
                 morningNotification.publish()
                 sessionLog.markNotified()
@@ -86,7 +88,7 @@ ApplicationWindow {
         id: morningNotification
 
         appName: qsTr("Peaked")
-        summary: qsTr("How do you feel this morning?")
+        summary: qsTr("How do you feel after yesterday?")
         previewSummary: summary
         remoteActions: [
             morningAction("default", "", "activate"),

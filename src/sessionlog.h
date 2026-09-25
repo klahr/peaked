@@ -17,7 +17,10 @@ class SessionLog : public QObject
     // The morning after an evening that has not been answered for yet
     Q_PROPERTY(bool morningPending READ morningPending NOTIFY changed)
     Q_PROPERTY(bool morningNotified READ morningNotified NOTIFY changed)
-    // Per mille hours of the evening asked about
+    // The evening asked about
+    Q_PROPERTY(QDateTime morningStart READ morningStart NOTIFY changed)
+    Q_PROPERTY(QDateTime morningEnd READ morningEnd NOTIFY changed)
+    Q_PROPERTY(double morningGrams READ morningGrams NOTIFY changed)
     Q_PROPERTY(double morningExposure READ morningExposure NOTIFY changed)
     // An unanswered evening that may still be asked about, for waking up
     Q_PROPERTY(bool morningUpcoming READ morningUpcoming NOTIFY changed)
@@ -41,6 +44,9 @@ public:
 
     bool morningPending() const { return m_pending >= 0; }
     bool morningNotified() const { return m_pending >= 0 && m_sessions.at(m_pending).notified; }
+    QDateTime morningStart() const { return m_pending >= 0 ? m_sessions.at(m_pending).start : QDateTime(); }
+    QDateTime morningEnd() const { return m_pending >= 0 ? m_sessions.at(m_pending).end : QDateTime(); }
+    double morningGrams() const { return m_pending >= 0 ? m_sessions.at(m_pending).grams : 0.0; }
     double morningExposure() const { return m_pending >= 0 ? m_sessions.at(m_pending).exposure : 0.0; }
     bool morningUpcoming() const { return m_upcoming; }
     double roughExposure() const { return m_roughExposure; }

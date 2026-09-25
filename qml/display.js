@@ -64,6 +64,18 @@ function morningColor(total, next, rough, normal) {
          : normal
 }
 
+// "Yesterday 19:10–02:30 · 5 standard drinks · 2.9 ‰·h"
+function evening(start, end, grams, exposureValue, standardGrams) {
+    var yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    var day = start.toDateString() === yesterday.toDateString() ? qsTr("Yesterday")
+                                                               : Format.formatDate(start, Formatter.DateMedium)
+    var drinks = Math.max(1, Math.round(grams / standardGrams))
+    return qsTr("%1 %2–%3 · %4 · %5").arg(day).arg(time(start)).arg(time(end))
+            .arg(drinks === 1 ? qsTr("1 standard drink") : qsTr("%1 standard drinks").arg(drinks))
+            .arg(exposure(exposureValue))
+}
+
 // Rounded up to the minute, like "2 h 15 min"
 function duration(milliseconds) {
     var minutes = Math.max(1, Math.ceil(milliseconds / 60000))

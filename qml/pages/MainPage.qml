@@ -109,13 +109,14 @@ Page {
                 spacing: Theme.paddingMedium
 
                 SectionHeader {
-                    text: qsTr("How do you feel this morning?")
+                    text: qsTr("How do you feel after yesterday?")
                 }
                 Label {
                     x: Theme.horizontalPageMargin
                     width: parent.width - 2 * x
                     wrapMode: Text.Wrap
-                    text: qsTr("After an evening of %1").arg(Display.exposure(sessionLog.morningExposure))
+                    text: Display.evening(sessionLog.morningStart, sessionLog.morningEnd, sessionLog.morningGrams,
+                                          sessionLog.morningExposure, advisor.standardDrinkGrams)
                     color: Theme.secondaryHighlightColor
                     font.pixelSize: Theme.fontSizeSmall
                 }
@@ -194,11 +195,12 @@ Page {
                     color: Theme.secondaryHighlightColor
                     font.pixelSize: Theme.fontSizeSmall
                 }
-                // About tomorrow, from how mornings after evenings like this felt
+                // About tomorrow, from how mornings after evenings like this felt.
+                // Only once enough mornings are answered to say something.
                 Label {
                     readonly property double rough: sessionLog.roughExposure
                     readonly property double total: bloodAlcohol.exposureTotal
-                    visible: drinkLog.count > 0 && page.drinking && total > 0
+                    visible: drinkLog.count > 0 && page.drinking && total > 0 && sessionLog.morningsKnown
                     width: parent.width
                     wrapMode: Text.Wrap
                     text: rough > 0 && total >= rough
@@ -210,9 +212,7 @@ Page {
                           : rough > 0
                           ? qsTr("Rough mornings from about %1, this evening %2").arg(Display.exposure(rough))
                                                                                 .arg(Display.exposure(total))
-                          : sessionLog.morningsKnown
-                          ? qsTr("No rough mornings recorded yet, this evening %1").arg(Display.exposure(total))
-                          : qsTr("Answer a few mornings to learn when they get rough")
+                          : qsTr("No rough mornings recorded yet, this evening %1").arg(Display.exposure(total))
                     color: Display.morningColor(total, advisor.nextExposure, rough, Theme.secondaryHighlightColor)
                 }
                 Button {
