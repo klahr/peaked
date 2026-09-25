@@ -1,0 +1,277 @@
+import QtQuick 2.0
+import Sailfish.Silica 1.0
+import "../display.js" as Display
+import rs.r8.peeked 1.0
+
+Page {
+    id: page
+
+    allowedOrientations: Orientation.All
+
+    // Moods are only asked for while there is alcohol in the blood
+    readonly property bool drinking: profile.configured
+                                     && (bloodAlcohol.current > 0 || drinkLog.activeCount > 0)
+
+    SilicaListView {
+        id: listView
+
+        anchors.fill: parent
+        model: drinkLog
+
+        // The header grows as its content loads, which would leave the top of
+        // it scrolled away until the user has scrolled themselves
+        property bool userScrolled
+        onMovementStarted: userScrolled = true
+
+        // Not while the header is still being created
+        Timer {
+            id: toTop
+            interval: 0
+            onTriggered: listView.positionViewAtBeginning()
+        }
+
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsDialog.qml"))
+            }
+            MenuItem {
+                text: qsTr("Presets")
+                onClicked: pageStack.push(Qt.resolvedUrl("PresetsPage.qml"))
+            }
+            MenuItem {
+                text: qsTr("Start drink")
+                enabled: profile.configured
+                onClicked: pageStack.push(Qt.resolvedUrl("PresetsPage.qml"), { picking: true })
+            }
+        }
+
+        header: Column {
+            width: listView.width
+            onHeightChanged: {
+                if (!listView.userScrolled)
+                    toTop.restart()
+            }
+            spacing: Theme.paddingMedium
+
+            PageHeader {
+                title: qsTr("Peeked")
+            }
+
+            Column {
+                visible: !profile.configured
+                width: parent.width
+                spacing: Theme.paddingLarge
+
+                Label {
+                    x: Theme.horizontalPageMargin
+                    width: parent.width - 2 * x
+                    wrapMode: Text.Wrap
+                    horizontalAlignment: Text.AlignHCenter
+                    text: qsTr("Enter your height, weight, age and sex to estimate your blood alcohol")
+                    color: Theme.highlightColor
+                    font.pixelSize: Theme.fontSizeLarge
+                }
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("Settings")
+                    onClicked: pageStack.push(Qt.resolvedUrl("SettingsDialog.qml"))
+                }
+            }
+
+            Label {
+                visible: profile.configured
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: Display.perMille(bloodAlcohol.current)
+                color: Theme.highlightColor
+                font.pixelSize: Theme.fontSizeHuge
+            }
+
+            Label {
+                visible: profile.configured && !isNaN(bloodAlcohol.soberAt.getTime())
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Sober at %1").arg(Display.time(bloodAlcohol.soberAt))
+                color: Theme.secondaryHighlightColor
+            }
+
+            BloodAlcoholGraph {
+                visible: profile.configured && bloodAlcohol.samples.length > 0
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * x
+                height: Math.round(page.height / 3)
+                samples: bloodAlcohol.samples
+                startTime: bloodAlcohol.graphStart
+                endTime: bloodAlcohol.graphEnd
+                nowTime: bloodAlcohol.now
+                peak: bloodAlcohol.peak
+                limit: profile.limit
+                moods: moodLog.entries
+                drinks: drinkLog.entries
+            }
+
+            Column {
+                visible: profile.configured
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * x
+                spacing: Theme.paddingSmall
+
+                Label {
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    text: advisor.drinkName.length > 0
+                          ? qsTr("Another %1 would take you to %2").arg(advisor.drinkName)
+                                                                   .arg(Display.perMille(advisor.nextPeak))
+                          : qsTr("A standard drink (%1 g) would take you to %2").arg(advisor.standardDrinkGrams)
+                                                                                .arg(Display.perMille(advisor.nextPeak))
+                    color: Theme.highlightColor
+                }
+                Label {
+                    visible: advisor.verdict !== Advisor.Unknown
+                             || advisor.goodCount + advisor.okCount + advisor.badCount > 0
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    text: advisor.verdict === Advisor.Go ? qsTr("Go ahead, you have felt good around that level")
+                        : advisor.verdict === Advisor.Careful ? qsTr("Take it easy, you have felt mixed around that level")
+                        : advisor.verdict === Advisor.Stop ? qsTr("Better not, you have felt bad around that level")
+                        : advisor.goodCount + advisor.okCount + advisor.badCount === 0
+                          ? qsTr("No moods recorded around that level yet")
+                          : qsTr("Too few moods recorded around that level")
+                    color: advisor.verdict === Advisor.Unknown ? Theme.secondaryHighlightColor
+                                                               : Display.verdictColor(advisor.verdict)
+                    font.pixelSize: Theme.fontSizeLarge
+                }
+                Label {
+                    visible: advisor.goodCount + advisor.okCount + advisor.badCount > 0
+                    width: parent.width
+                    text: qsTr("%1 %2   %3 %4   %5 %6")
+                          .arg(Display.moodEmoji(MoodLog.Good)).arg(advisor.goodCount)
+                          .arg(Display.moodEmoji(MoodLog.Ok)).arg(advisor.okCount)
+                          .arg(Display.moodEmoji(MoodLog.Bad)).arg(advisor.badCount)
+                    color: Theme.secondaryHighlightColor
+                    font.pixelSize: Theme.fontSizeSmall
+                }
+                Button {
+                    visible: advisor.drinkName.length > 0
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("Start another %1").arg(advisor.drinkName)
+                    onClicked: drinkLog.repeatLatestDrink()
+                }
+            }
+
+            SectionHeader {
+                visible: moodRow.visible
+                text: qsTr("How do you feel?")
+            }
+
+            Row {
+                id: moodRow
+
+                visible: page.drinking && moodLog.canRecord
+                x: Theme.horizontalPageMargin
+                spacing: Theme.paddingMedium
+
+                Repeater {
+                    model: [
+                        { mood: MoodLog.Good, text: qsTr("Good") },
+                        { mood: MoodLog.Ok, text: qsTr("OK") },
+                        { mood: MoodLog.Bad, text: qsTr("Bad") }
+                    ]
+
+                    Button {
+                        width: (page.width - 2 * Theme.horizontalPageMargin - 2 * moodRow.spacing) / 3
+                        text: Display.moodEmoji(modelData.mood) + " " + modelData.text
+                        onClicked: moodLog.record(modelData.mood)
+                    }
+                }
+            }
+
+            Label {
+                visible: page.drinking && !moodLog.canRecord
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * x
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr("Mood recorded at %1").arg(Display.time(moodLog.lastRecorded))
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeExtraSmall
+            }
+
+            Label {
+                visible: profile.configured && drinkLog.count === 0
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * x
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr("Pull down to start a drink")
+                color: Theme.secondaryHighlightColor
+            }
+
+            SectionHeader {
+                visible: drinkLog.count > 0
+                text: qsTr("Drinks")
+            }
+        }
+
+        delegate: ListItem {
+            id: listItem
+
+            contentHeight: Theme.itemSizeMedium
+            menu: ContextMenu {
+                MenuItem {
+                    visible: model.active
+                    text: qsTr("Finish")
+                    onClicked: drinkLog.finishDrink(model.drinkId)
+                }
+                MenuItem {
+                    visible: !model.active
+                    text: qsTr("Edit")
+                    onClicked: pageStack.push(Qt.resolvedUrl("DrinkDialog.qml"), { drinkId: model.drinkId })
+                }
+                MenuItem {
+                    text: qsTr("Remove")
+                    onClicked: {
+                        var drinkId = model.drinkId
+                        listItem.remorseDelete(function() { drinkLog.removeDrink(drinkId) })
+                    }
+                }
+            }
+            onClicked: {
+                if (model.active)
+                    drinkLog.finishDrink(model.drinkId)
+                else
+                    pageStack.push(Qt.resolvedUrl("DrinkDialog.qml"), { drinkId: model.drinkId })
+            }
+
+            DrinkPhoto {
+                id: photo
+                x: Theme.horizontalPageMargin
+                anchors.verticalCenter: parent.verticalCenter
+                source: model.image
+            }
+
+            Column {
+                anchors.verticalCenter: parent.verticalCenter
+                x: photo.visible ? photo.x + photo.width + Theme.paddingMedium : Theme.horizontalPageMargin
+                width: parent.width - x - Theme.horizontalPageMargin
+
+                Label {
+                    width: parent.width
+                    text: model.name
+                    truncationMode: TruncationMode.Fade
+                    color: model.active || listItem.highlighted ? Theme.highlightColor : Theme.primaryColor
+                }
+                Label {
+                    width: parent.width
+                    text: model.active
+                          ? qsTr("Drinking since %1, tap to finish").arg(Display.time(model.started))
+                          : qsTr("%1 – %2 · %3 · %4").arg(Display.time(model.started)).arg(Display.time(model.finished))
+                            .arg(Display.volume(model.volume)).arg(Display.abv(model.abv))
+                    truncationMode: TruncationMode.Fade
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: model.active || listItem.highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                }
+            }
+        }
+
+        VerticalScrollDecorator { }
+    }
+}

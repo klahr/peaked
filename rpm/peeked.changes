@@ -1,0 +1,11 @@
+* Fri Sep 25 2026 Joachim Klahr <klahr@r8.rs> 0.1.0-1
+- First release
+- Blood alcohol estimate in per mille from height, weight, age and sex
+  (Watson body water, Widmark), with a graph of past and expected levels
+- When you will be sober, with a configurable limit line in the graph,
+  0.2 per mille by default
+- Drink presets with name, size, alcohol and a photo, prefilled from
+  Open Food Facts, picked from the gallery or taken with the camera
+- Start and finish drinks, edit finished ones, start another from the cover
+- Mood prompts every 30 minutes and advice on another drink based on how
+  you felt at that level before

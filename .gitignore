@@ -1,0 +1,18 @@
+# Developer device password for deploying to the phone
+passwd
+
+# Qt Creator per-user settings
+*.pro.user
+
+# In-tree build output from sfdk
+*.o
+moc_*.cpp
+*.moc
+Makefile
+.qmake.stash
+/peeked
+/RPMS/
+/.sfdk/
+/documentation.list
+/build-*.log
+translations/*.qm
