@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import rs.r8.peeked 1.0
+import rs.r8.peaked 1.0
 import "../display.js" as Display
 
 // Picks a drink from Open Food Facts, whatever it knows is handed to picked()

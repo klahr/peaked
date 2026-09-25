@@ -1,10 +1,10 @@
 # The name of your application
-TARGET = peeked
+TARGET = peaked
 
 CONFIG += sailfishapp
 QT += dbus network
 
-SOURCES += src/peeked.cpp \
+SOURCES += src/peaked.cpp \
     src/advisor.cpp \
     src/bloodalcohol.cpp \
     src/drinklog.cpp \
@@ -21,7 +21,7 @@ HEADERS += src/advisor.h \
     src/productsearch.h \
     src/profile.h
 
-DISTFILES += qml/peeked.qml \
+DISTFILES += qml/peaked.qml \
     qml/display.js \
     qml/cover/CoverPage.qml \
     qml/pages/BloodAlcoholGraph.qml \
@@ -33,16 +33,16 @@ DISTFILES += qml/peeked.qml \
     qml/pages/PresetsPage.qml \
     qml/pages/ProductSearchPage.qml \
     qml/pages/SettingsDialog.qml \
-    rpm/peeked.changes \
-    rpm/peeked.spec \
+    rpm/peaked.changes \
+    rpm/peaked.spec \
     translations/*.ts \
-    peeked.desktop \
+    peaked.desktop \
     LICENSE \
     README.md \
-    icons/peeked.svg
+    icons/peaked.svg
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
 
-# Keeps translations/peeked.ts up to date as the source for translators.
-# Add translations/peeked-<lang>.ts files to TRANSLATIONS to ship them.
+# Keeps translations/peaked.ts up to date as the source for translators.
+# Add translations/peaked-<lang>.ts files to TRANSLATIONS to ship them.
 CONFIG += sailfishapp_i18n

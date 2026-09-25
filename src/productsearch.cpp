@@ -65,7 +65,7 @@ void ProductSearch::search(const QString &query)
 
     QNetworkRequest request(url);
     // Open Food Facts asks every app to identify itself
-    request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("Peeked/0.1.0 (klahr@r8.rs)"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("Peaked/0.1.0 (klahr@r8.rs)"));
     m_reply = m_network.get(request);
     connect(m_reply.data(), &QNetworkReply::finished, this, &ProductSearch::finished);
     emit busyChanged();

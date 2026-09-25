@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=peeked
-Exec=/usr/bin/peeked
-Name=Peeked
+Icon=peaked
+Exec=/usr/bin/peaked
+Name=Peaked
 
 [X-Sailjail]
 OrganizationName=rs.r8
-ApplicationName=peeked
+ApplicationName=peaked
 Permissions=Internet;Notifications;Pictures;MediaIndexing;Camera

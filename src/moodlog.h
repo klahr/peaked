@@ -14,7 +14,7 @@ class BloodAlcohol;
 class MoodLog : public QObject
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "rs.r8.peeked")
+    Q_CLASSINFO("D-Bus Interface", "rs.r8.peaked")
     // Maps with time in milliseconds since the epoch, mood and perMille
     Q_PROPERTY(QVariantList entries READ entries NOTIFY changed)
     Q_PROPERTY(QDateTime lastRecorded READ lastRecorded NOTIFY changed)

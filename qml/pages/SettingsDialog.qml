@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import rs.r8.peeked 1.0
+import rs.r8.peaked 1.0
 
 Dialog {
     allowedOrientations: Orientation.All
@@ -62,7 +62,7 @@ Dialog {
                 placeholderText: label
                 text: profile.age > 0 ? profile.age : ""
                 inputMethodHints: Qt.ImhDigitsOnly
-                validator: IntValidator { bottom: 10; top: 120 }
+                validator: IntValidator { bottom: 18; top: 120 }
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
             }

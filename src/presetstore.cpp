@@ -152,7 +152,7 @@ QString PresetStore::savePreset(const QString &presetId, const QString &name, co
 void PresetStore::fetchImage(const QString &presetId, const QUrl &url)
 {
     QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("Peeked/0.1.0 (klahr@r8.rs)"));
+    request.setHeader(QNetworkRequest::UserAgentHeader, QStringLiteral("Peaked/0.1.0 (klahr@r8.rs)"));
     QNetworkReply *reply = m_network.get(request);
     connect(reply, &QNetworkReply::finished, this, [this, reply, presetId]() {
         reply->deleteLater();

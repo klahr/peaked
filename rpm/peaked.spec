@@ -1,10 +1,10 @@
-Name:       peeked
+Name:       peaked
 
 Summary:    Alcohol tracker that learns how you feel
 Version:    0.1.0
 Release:    1
 License:    GPLv3
-URL:        https://github.com/klahr/peeked
+URL:        https://github.com/klahr/peaked
 Source0:    %{name}-%{version}.tar.bz2
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   nemo-qml-plugin-notifications-qt5

@@ -10,7 +10,7 @@ moc_*.cpp
 *.moc
 Makefile
 .qmake.stash
-/peeked
+/peaked
 /RPMS/
 /.sfdk/
 /documentation.list

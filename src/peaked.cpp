@@ -17,12 +17,12 @@ int main(int argc, char *argv[])
 {
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
 
-    qmlRegisterUncreatableType<Profile>("rs.r8.peeked", 1, 0, "Profile",
+    qmlRegisterUncreatableType<Profile>("rs.r8.peaked", 1, 0, "Profile",
                                         QStringLiteral("The profile is a context property"));
-    qmlRegisterUncreatableType<MoodLog>("rs.r8.peeked", 1, 0, "MoodLog",
+    qmlRegisterUncreatableType<MoodLog>("rs.r8.peaked", 1, 0, "MoodLog",
                                         QStringLiteral("The mood log is a context property"));
-    qmlRegisterType<ProductSearch>("rs.r8.peeked", 1, 0, "ProductSearch");
-    qmlRegisterUncreatableType<Advisor>("rs.r8.peeked", 1, 0, "Advisor",
+    qmlRegisterType<ProductSearch>("rs.r8.peaked", 1, 0, "ProductSearch");
+    qmlRegisterUncreatableType<Advisor>("rs.r8.peaked", 1, 0, "Advisor",
                                         QStringLiteral("The advisor is a context property"));
 
     Profile profile;
@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
     // The mood notification buttons call in here. Sailjail lets the app own
     // its OrganizationName.ApplicationName.
     QDBusConnection bus = QDBusConnection::sessionBus();
-    bus.registerService(QStringLiteral("rs.r8.peeked"));
-    bus.registerObject(QStringLiteral("/rs/r8/peeked"), &moodLog, QDBusConnection::ExportScriptableSlots);
+    bus.registerService(QStringLiteral("rs.r8.peaked"));
+    bus.registerObject(QStringLiteral("/rs/r8/peaked"), &moodLog, QDBusConnection::ExportScriptableSlots);
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     view->rootContext()->setContextProperty(QStringLiteral("profile"), &profile);

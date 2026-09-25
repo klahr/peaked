@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "../display.js" as Display
-import rs.r8.peeked 1.0
+import rs.r8.peaked 1.0
 
 CoverBackground {
     Column {
@@ -12,7 +12,7 @@ CoverBackground {
         Label {
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Peeked")
+            text: qsTr("Peaked")
             color: Theme.secondaryColor
         }
         Label {

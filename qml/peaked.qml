@@ -16,9 +16,9 @@ ApplicationWindow {
         return {
             name: name,
             displayName: displayName,
-            service: "rs.r8.peeked",
-            path: "/rs/r8/peeked",
-            iface: "rs.r8.peeked",
+            service: "rs.r8.peaked",
+            path: "/rs/r8/peaked",
+            iface: "rs.r8.peaked",
             method: method
         }
     }
@@ -44,7 +44,7 @@ ApplicationWindow {
     Notification {
         id: moodNotification
 
-        appName: qsTr("Peeked")
+        appName: qsTr("Peaked")
         summary: qsTr("How do you feel?")
         previewSummary: summary
         remoteActions: [

@@ -1,4 +1,4 @@
-# Peeked
+# Peaked
 
 An alcohol tracker for Sailfish OS that learns how you feel at different
 levels and tells you whether another drink is a good idea.

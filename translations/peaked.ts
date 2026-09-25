@@ -18,7 +18,7 @@
     <name>CoverPage</name>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="15"/>
-        <source>Peeked</source>
+        <source>Peaked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="58"/>
-        <source>Peeked</source>
+        <source>Peaked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -472,34 +472,34 @@
     </message>
 </context>
 <context>
-    <name>peeked</name>
+    <name>peaked</name>
     <message>
-        <location filename="../qml/peeked.qml" line="37"/>
+        <location filename="../qml/peaked.qml" line="37"/>
         <source>At %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/peeked.qml" line="47"/>
-        <source>Peeked</source>
+        <location filename="../qml/peaked.qml" line="47"/>
+        <source>Peaked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/peeked.qml" line="48"/>
+        <location filename="../qml/peaked.qml" line="48"/>
         <source>How do you feel?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/peeked.qml" line="52"/>
+        <location filename="../qml/peaked.qml" line="52"/>
         <source>Good</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/peeked.qml" line="53"/>
+        <location filename="../qml/peaked.qml" line="53"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/peeked.qml" line="54"/>
+        <location filename="../qml/peaked.qml" line="54"/>
         <source>Bad</source>
         <translation type="unfinished"></translation>
     </message>
