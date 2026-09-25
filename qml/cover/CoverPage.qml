@@ -33,11 +33,21 @@ CoverBackground {
             color: Theme.secondaryHighlightColor
         }
         Label {
-            visible: profile.configured && advisor.verdict !== Advisor.Unknown
+            visible: profile.configured && (bloodAlcohol.current > 0 || drinkLog.activeCount > 0)
+                     && bloodAlcohol.exposureTotal > 0
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            text: Display.exposureOf(bloodAlcohol.exposureTotal, sessionLog.roughExposure)
+            font.pixelSize: Theme.fontSizeSmall
+            color: Display.morningColor(bloodAlcohol.exposureTotal, advisor.nextExposure, sessionLog.roughExposure,
+                                        Theme.secondaryColor)
+        }
+        Label {
+            visible: profile.configured && drinkLog.count > 0 && advisor.verdict !== Advisor.Unknown
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap
-            text: Display.verdictShort(advisor.verdict)
+            text: Display.verdictShort(advisor.verdict, advisor.nextDrinkAt, bloodAlcohol.now)
             color: Display.verdictColor(advisor.verdict)
         }
     }

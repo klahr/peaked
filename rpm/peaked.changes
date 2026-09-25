@@ -7,5 +7,8 @@
 - Drink presets with name, size, alcohol and a photo, prefilled from
   Open Food Facts, picked from the gallery or taken with the camera
 - Start and finish drinks, edit finished ones, start another from the cover
-- Mood prompts every 30 minutes and advice on another drink based on how
-  you felt at that level before
+- Mood prompts every 30 minutes, and how you usually feel at the level
+  another drink would take you to, how long a pause keeps you lower and
+  when to stop, from your moods tonight and before
+- Exposure of the evening in per mille hours, and a morning check-in the
+  day after that learns from which exposure mornings are usually rough

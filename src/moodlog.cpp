@@ -54,6 +54,28 @@ void MoodLog::record(Mood mood)
     save();
 }
 
+void MoodLog::recalculateBetween(const QDateTime &from, const QDateTime &to)
+{
+    bool touched = false;
+    for (int i = m_moods.size() - 1; i >= 0; --i) {
+        if (m_moods.at(i).time < from || m_moods.at(i).time > to)
+            continue;
+        touched = true;
+        const double level = m_bloodAlcohol->levelAt(m_moods.at(i).time);
+        if (level > 0.0)
+            m_moods[i].perMille = level;
+        else
+            m_moods.removeAt(i);
+    }
+    if (!touched)
+        return;
+    m_cooldownTimer.stop();
+    emit changed();
+    emit canRecordChanged();
+    startCooldown();
+    save();
+}
+
 void MoodLog::startCooldown()
 {
     if (canRecord())

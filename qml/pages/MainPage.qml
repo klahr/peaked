@@ -94,6 +94,36 @@ Page {
                 color: Theme.secondaryHighlightColor
             }
 
+            Label {
+                visible: page.drinking && bloodAlcohol.exposureTotal > 0
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Exposure %1 so far, %2 until sober").arg(Display.exposure(bloodAlcohol.exposure))
+                                                               .arg(Display.exposure(bloodAlcohol.exposureTotal))
+                color: Theme.secondaryColor
+                font.pixelSize: Theme.fontSizeSmall
+            }
+
+            Column {
+                visible: profile.configured && sessionLog.morningPending
+                width: parent.width
+                spacing: Theme.paddingMedium
+
+                SectionHeader {
+                    text: qsTr("How do you feel this morning?")
+                }
+                Label {
+                    x: Theme.horizontalPageMargin
+                    width: parent.width - 2 * x
+                    wrapMode: Text.Wrap
+                    text: qsTr("After an evening of %1").arg(Display.exposure(sessionLog.morningExposure))
+                    color: Theme.secondaryHighlightColor
+                    font.pixelSize: Theme.fontSizeSmall
+                }
+                MoodButtons {
+                    onPicked: sessionLog.recordMorning(mood)
+                }
+            }
+
             BloodAlcoholGraph {
                 visible: profile.configured && bloodAlcohol.samples.length > 0
                 x: Theme.horizontalPageMargin
@@ -105,7 +135,8 @@ Page {
                 nowTime: bloodAlcohol.now
                 peak: bloodAlcohol.peak
                 limit: profile.limit
-                moods: moodLog.entries
+                // Without alcohol there is nothing the moods belong to
+                moods: bloodAlcohol.hasAlcohol ? moodLog.entries : []
                 drinks: drinkLog.entries
             }
 
@@ -125,14 +156,27 @@ Page {
                                                                                 .arg(Display.perMille(advisor.nextPeak))
                     color: Theme.highlightColor
                 }
+                // Moods only come in once there are drinks to relate them to
                 Label {
-                    visible: advisor.verdict !== Advisor.Unknown
-                             || advisor.goodCount + advisor.okCount + advisor.badCount > 0
+                    visible: drinkLog.count > 0
+                             && (advisor.verdict !== Advisor.Unknown
+                                 || advisor.goodCount + advisor.okCount + advisor.badCount > 0)
                     width: parent.width
                     wrapMode: Text.Wrap
-                    text: advisor.verdict === Advisor.Go ? qsTr("Go ahead, you have felt good around that level")
-                        : advisor.verdict === Advisor.Careful ? qsTr("Take it easy, you have felt mixed around that level")
-                        : advisor.verdict === Advisor.Stop ? qsTr("Better not, you have felt bad around that level")
+                    // Informs about another drink, never recommends one
+                    text: advisor.verdict === Advisor.Comfortable ? qsTr("You usually feel good around that level")
+                        : advisor.verdict === Advisor.Careful
+                          ? (advisor.reason === Advisor.BeyondExperience ? qsTr("Take it easy, you have not recorded a mood at that level yet")
+                             : advisor.reason === Advisor.TonightWorse ? qsTr("Take it easy, you feel worse than earlier tonight")
+                             : qsTr("Take it easy, you have felt mixed around that level"))
+                        : advisor.verdict === Advisor.Wait
+                          ? qsTr("Have a glass of water. If you have another %1, wait at least %2 to stay at %3")
+                            .arg(advisor.drinkName.length > 0 ? advisor.drinkName : qsTr("drink"))
+                            .arg(Display.duration(advisor.nextDrinkAt.getTime() - bloodAlcohol.now.getTime()))
+                            .arg(Display.perMille(advisor.waitPeak))
+                        : advisor.verdict === Advisor.Stop
+                          ? (advisor.reason === Advisor.TonightBad ? qsTr("Better stop for tonight, you feel bad")
+                             : qsTr("Better stop, you have felt bad around that level"))
                         : advisor.goodCount + advisor.okCount + advisor.badCount === 0
                           ? qsTr("No moods recorded around that level yet")
                           : qsTr("Too few moods recorded around that level")
@@ -141,7 +185,7 @@ Page {
                     font.pixelSize: Theme.fontSizeLarge
                 }
                 Label {
-                    visible: advisor.goodCount + advisor.okCount + advisor.badCount > 0
+                    visible: drinkLog.count > 0 && advisor.goodCount + advisor.okCount + advisor.badCount > 0
                     width: parent.width
                     text: qsTr("%1 %2   %3 %4   %5 %6")
                           .arg(Display.moodEmoji(MoodLog.Good)).arg(advisor.goodCount)
@@ -149,6 +193,27 @@ Page {
                           .arg(Display.moodEmoji(MoodLog.Bad)).arg(advisor.badCount)
                     color: Theme.secondaryHighlightColor
                     font.pixelSize: Theme.fontSizeSmall
+                }
+                // About tomorrow, from how mornings after evenings like this felt
+                Label {
+                    readonly property double rough: sessionLog.roughExposure
+                    readonly property double total: bloodAlcohol.exposureTotal
+                    visible: drinkLog.count > 0 && page.drinking && total > 0
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    text: rough > 0 && total >= rough
+                          ? qsTr("Mornings after evenings above %1 were usually rough").arg(Display.exposure(rough))
+                          : rough > 0 && advisor.nextExposure >= rough
+                          ? qsTr("Another %1 would take the evening to %2. Mornings after that were usually rough")
+                            .arg(advisor.drinkName.length > 0 ? advisor.drinkName : qsTr("drink"))
+                            .arg(Display.exposure(advisor.nextExposure))
+                          : rough > 0
+                          ? qsTr("Rough mornings from about %1, this evening %2").arg(Display.exposure(rough))
+                                                                                .arg(Display.exposure(total))
+                          : sessionLog.morningsKnown
+                          ? qsTr("No rough mornings recorded yet, this evening %1").arg(Display.exposure(total))
+                          : qsTr("Answer a few mornings to learn when they get rough")
+                    color: Display.morningColor(total, advisor.nextExposure, rough, Theme.secondaryHighlightColor)
                 }
                 Button {
                     visible: advisor.drinkName.length > 0
@@ -163,26 +228,10 @@ Page {
                 text: qsTr("How do you feel?")
             }
 
-            Row {
+            MoodButtons {
                 id: moodRow
-
                 visible: page.drinking && moodLog.canRecord
-                x: Theme.horizontalPageMargin
-                spacing: Theme.paddingMedium
-
-                Repeater {
-                    model: [
-                        { mood: MoodLog.Good, text: qsTr("Good") },
-                        { mood: MoodLog.Ok, text: qsTr("OK") },
-                        { mood: MoodLog.Bad, text: qsTr("Bad") }
-                    ]
-
-                    Button {
-                        width: (page.width - 2 * Theme.horizontalPageMargin - 2 * moodRow.spacing) / 3
-                        text: Display.moodEmoji(modelData.mood) + " " + modelData.text
-                        onClicked: moodLog.record(modelData.mood)
-                    }
-                }
+                onPicked: moodLog.record(mood)
             }
 
             Label {
@@ -230,7 +279,14 @@ Page {
                     text: qsTr("Remove")
                     onClicked: {
                         var drinkId = model.drinkId
-                        listItem.remorseDelete(function() { drinkLog.removeDrink(drinkId) })
+                        var started = model.started
+                        listItem.remorseDelete(function() {
+                            // Moods from while it was in the blood get the per mille
+                            // of the drinks left, or go when nothing else was drunk
+                            var sober = bloodAlcohol.soberAfter(started)
+                            drinkLog.removeDrink(drinkId)
+                            moodLog.recalculateBetween(started, sober)
+                        })
                     }
                 }
             }

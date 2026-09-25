@@ -55,6 +55,56 @@ ApplicationWindow {
         ]
     }
 
+    function morningAction(name, displayName, method) {
+        return {
+            name: name,
+            displayName: displayName,
+            service: "rs.r8.peaked",
+            path: "/rs/r8/peaked/morning",
+            iface: "rs.r8.peaked.Morning",
+            method: method
+        }
+    }
+
+    // The morning after, once per evening
+    BackgroundJob {
+        enabled: profile.configured && sessionLog.morningUpcoming
+        frequency: BackgroundJob.ThirtyMinutes
+        onTriggered: {
+            bloodAlcohol.update()
+            if (sessionLog.morningPending && !sessionLog.morningNotified) {
+                morningNotification.body = qsTr("After an evening of %1").arg(Display.exposure(sessionLog.morningExposure))
+                morningNotification.previewBody = morningNotification.body
+                morningNotification.publish()
+                sessionLog.markNotified()
+            }
+            finished()
+        }
+    }
+
+    Notification {
+        id: morningNotification
+
+        appName: qsTr("Peaked")
+        summary: qsTr("How do you feel this morning?")
+        previewSummary: summary
+        remoteActions: [
+            morningAction("default", "", "activate"),
+            morningAction("good", qsTr("Good"), "recordGood"),
+            morningAction("ok", qsTr("OK"), "recordOk"),
+            morningAction("bad", qsTr("Bad"), "recordBad")
+        ]
+    }
+
+    Connections {
+        target: sessionLog
+        onChanged: {
+            if (!sessionLog.morningPending)
+                morningNotification.close()
+        }
+        onActivateRequested: window.activate()
+    }
+
     Connections {
         target: moodLog
         onChanged: moodNotification.close()
@@ -71,5 +121,8 @@ ApplicationWindow {
     }
 
     // The buttons would do nothing once the app is gone
-    Component.onDestruction: moodNotification.close()
+    Component.onDestruction: {
+        moodNotification.close()
+        morningNotification.close()
+    }
 }

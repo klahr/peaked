@@ -109,108 +109,177 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="122"/>
+        <location filename="../qml/pages/MainPage.qml" line="153"/>
         <source>Another %1 would take you to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="124"/>
+        <location filename="../qml/pages/MainPage.qml" line="155"/>
         <source>A standard drink (%1 g) would take you to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="133"/>
-        <source>Go ahead, you have felt good around that level</source>
+        <location filename="../qml/pages/MainPage.qml" line="169"/>
+        <source>Take it easy, you have not recorded a mood at that level yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="134"/>
+        <location filename="../qml/pages/MainPage.qml" line="171"/>
         <source>Take it easy, you have felt mixed around that level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="135"/>
-        <source>Better not, you have felt bad around that level</source>
+        <location filename="../qml/pages/MainPage.qml" line="167"/>
+        <source>You usually feel good around that level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="137"/>
+        <location filename="../qml/pages/MainPage.qml" line="100"/>
+        <source>Exposure %1 so far, %2 until sober</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="112"/>
+        <source>How do you feel this morning?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="118"/>
+        <source>After an evening of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="170"/>
+        <source>Take it easy, you feel worse than earlier tonight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="173"/>
+        <source>Have a glass of water. If you have another %1, wait at least %2 to stay at %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="174"/>
+        <location filename="../qml/pages/MainPage.qml" line="208"/>
+        <source>drink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="178"/>
+        <source>Better stop for tonight, you feel bad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="179"/>
+        <source>Better stop, you have felt bad around that level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="181"/>
         <source>No moods recorded around that level yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="138"/>
+        <location filename="../qml/pages/MainPage.qml" line="182"/>
         <source>Too few moods recorded around that level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="146"/>
+        <location filename="../qml/pages/MainPage.qml" line="190"/>
         <source>%1 %2   %3 %4   %5 %6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="156"/>
-        <source>Start another %1</source>
+        <location filename="../qml/pages/MainPage.qml" line="205"/>
+        <source>Mornings after evenings above %1 were usually rough</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="163"/>
-        <source>How do you feel?</source>
+        <location filename="../qml/pages/MainPage.qml" line="207"/>
+        <source>Another %1 would take the evening to %2. Mornings after that were usually rough</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="175"/>
-        <source>Good</source>
+        <location filename="../qml/pages/MainPage.qml" line="211"/>
+        <source>Rough mornings from about %1, this evening %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="176"/>
-        <source>OK</source>
+        <location filename="../qml/pages/MainPage.qml" line="214"/>
+        <source>No rough mornings recorded yet, this evening %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="177"/>
-        <source>Bad</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="193"/>
-        <source>Mood recorded at %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="204"/>
-        <source>Pull down to start a drink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="210"/>
-        <source>Drinks</source>
+        <location filename="../qml/pages/MainPage.qml" line="215"/>
+        <source>Answer a few mornings to learn when they get rough</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="221"/>
+        <source>Start another %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="228"/>
+        <source>How do you feel?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="242"/>
+        <source>Mood recorded at %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="253"/>
+        <source>Pull down to start a drink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="259"/>
+        <source>Drinks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="270"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="226"/>
+        <location filename="../qml/pages/MainPage.qml" line="275"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="230"/>
+        <location filename="../qml/pages/MainPage.qml" line="279"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="265"/>
+        <location filename="../qml/pages/MainPage.qml" line="321"/>
         <source>Drinking since %1, tap to finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="266"/>
+        <location filename="../qml/pages/MainPage.qml" line="322"/>
         <source>%1 – %2 · %3 · %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MoodButtons</name>
+    <message>
+        <location filename="../qml/pages/MoodButtons.qml" line="17"/>
+        <source>Good</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MoodButtons.qml" line="18"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MoodButtons.qml" line="19"/>
+        <source>Bad</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -440,33 +509,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/display.js" line="40"/>
-        <source>Go ahead</source>
+        <location filename="../qml/display.js" line="41"/>
+        <source>Feels good</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/display.js" line="41"/>
-        <source>Take it easy</source>
+        <location filename="../qml/display.js" line="43"/>
+        <source>Wait %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/display.js" line="44"/>
+        <source>Better stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/display.js" line="42"/>
-        <source>Better not</source>
+        <source>Take it easy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/display.js" line="50"/>
-        <source>%1 h %2 min</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/display.js" line="50"/>
-        <source>%1 min</source>
+        <source>%1 ‰·h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/display.js" line="55"/>
-        <location filename="../qml/display.js" line="56"/>
+        <source>%1 / %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/display.js" line="71"/>
+        <source>%1 h %2 min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/display.js" line="71"/>
+        <source>%1 min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/display.js" line="76"/>
+        <location filename="../qml/display.js" line="77"/>
         <source>%1 · %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,6 +564,7 @@
     </message>
     <message>
         <location filename="../qml/peaked.qml" line="47"/>
+        <location filename="../qml/peaked.qml" line="88"/>
         <source>Peaked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -490,17 +575,30 @@
     </message>
     <message>
         <location filename="../qml/peaked.qml" line="52"/>
+        <location filename="../qml/peaked.qml" line="93"/>
         <source>Good</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/peaked.qml" line="53"/>
+        <location filename="../qml/peaked.qml" line="94"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/peaked.qml" line="54"/>
+        <location filename="../qml/peaked.qml" line="95"/>
         <source>Bad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/peaked.qml" line="76"/>
+        <source>After an evening of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/peaked.qml" line="89"/>
+        <source>How do you feel this morning?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

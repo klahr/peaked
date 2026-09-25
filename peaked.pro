@@ -8,18 +8,22 @@ SOURCES += src/peaked.cpp \
     src/advisor.cpp \
     src/bloodalcohol.cpp \
     src/drinklog.cpp \
+    src/monotone.cpp \
     src/moodlog.cpp \
     src/presetstore.cpp \
     src/productsearch.cpp \
-    src/profile.cpp
+    src/profile.cpp \
+    src/sessionlog.cpp
 
 HEADERS += src/advisor.h \
     src/bloodalcohol.h \
     src/drinklog.h \
+    src/monotone.h \
     src/moodlog.h \
     src/presetstore.h \
     src/productsearch.h \
-    src/profile.h
+    src/profile.h \
+    src/sessionlog.h
 
 DISTFILES += qml/peaked.qml \
     qml/display.js \
@@ -29,6 +33,7 @@ DISTFILES += qml/peaked.qml \
     qml/pages/DrinkDialog.qml \
     qml/pages/DrinkPhoto.qml \
     qml/pages/MainPage.qml \
+    qml/pages/MoodButtons.qml \
     qml/pages/PresetDialog.qml \
     qml/pages/PresetsPage.qml \
     qml/pages/ProductSearchPage.qml \

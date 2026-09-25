@@ -22,8 +22,11 @@ BuildRequires:  desktop-file-utils
 %description
 Keeps track of the drinks you have had and estimates your blood alcohol
 over time from your height, weight, age and sex. Asks how you feel as the
-evening goes on, and tells you whether another drink is a good idea from
-how you felt at that level before.
+evening goes on, and shows how you usually feel at the level another drink
+would take you to, when a pause would keep you lower and when to stop.
+Asks the next morning how you feel and learns from which exposure, the
+area under the curve, your mornings are usually rough. It never
+recommends a drink.
 
 
 %prep

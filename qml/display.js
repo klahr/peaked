@@ -30,17 +30,38 @@ function glass(abv) {
 
 // Empty when there is too little to go on
 function verdictColor(verdict) {
-    return verdict === Advisor.Go ? moodColors[MoodLog.Good]
-         : verdict === Advisor.Careful ? moodColors[MoodLog.Ok]
+    return verdict === Advisor.Comfortable ? moodColors[MoodLog.Good]
+         : verdict === Advisor.Careful || verdict === Advisor.Wait ? moodColors[MoodLog.Ok]
          : verdict === Advisor.Stop ? moodColors[MoodLog.Bad]
          : ""
 }
 
-function verdictShort(verdict) {
-    return verdict === Advisor.Go ? qsTr("Go ahead")
+// Informs about another drink, never recommends one
+function verdictShort(verdict, nextDrinkAt, now) {
+    return verdict === Advisor.Comfortable ? qsTr("Feels good")
          : verdict === Advisor.Careful ? qsTr("Take it easy")
-         : verdict === Advisor.Stop ? qsTr("Better not")
+         : verdict === Advisor.Wait ? qsTr("Wait %1").arg(duration(nextDrinkAt.getTime() - now.getTime()))
+         : verdict === Advisor.Stop ? qsTr("Better stop")
          : ""
+}
+
+// Per mille hours, the area under the curve
+function exposure(value) {
+    return qsTr("%1 ‰·h").arg(value.toLocaleString(Qt.locale(), "f", 1))
+}
+
+// Tonight's exposure against the one mornings get rough from, like "1.6 / 2.5 ‰·h"
+function exposureOf(value, rough) {
+    return rough > 0 ? qsTr("%1 / %2").arg(value.toLocaleString(Qt.locale(), "f", 1)).arg(exposure(rough))
+                     : exposure(value)
+}
+
+// Normal colour until the evening, or one more drink, reaches rough mornings
+function morningColor(total, next, rough, normal) {
+    return rough <= 0 ? normal
+         : total >= rough ? moodColors[MoodLog.Bad]
+         : next >= rough ? moodColors[MoodLog.Ok]
+         : normal
 }
 
 // Rounded up to the minute, like "2 h 15 min"

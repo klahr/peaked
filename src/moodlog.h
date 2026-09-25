@@ -43,6 +43,10 @@ public:
     bool canRecord() const;
 
     Q_INVOKABLE void record(Mood mood);
+    // After a drink was removed, for the moods from while it was in the blood.
+    // Their per mille is taken again from the drinks left, a mood with no
+    // alcohol left at its time is removed.
+    Q_INVOKABLE void recalculateBetween(const QDateTime &from, const QDateTime &to);
 
 public slots:
     // Called over D-Bus by the notification buttons, which can not pass arguments

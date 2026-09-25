@@ -85,6 +85,36 @@ static QVector<double> simulate(const QVector<Intake> &intakes, qint64 t0, qint6
     return values;
 }
 
+// The stretches of values above zero. Each gets the drinks started since the
+// previous stretch ended.
+static QVector<BloodAlcohol::Episode> findEpisodes(const QVector<double> &values, qint64 t0,
+                                                   const QVector<Intake> &intakes)
+{
+    QVector<BloodAlcohol::Episode> episodes;
+    qint64 boundary = t0;
+    int i = 0;
+    while (i < values.size()) {
+        if (values.at(i) <= 0.0) {
+            ++i;
+            continue;
+        }
+        BloodAlcohol::Episode episode { t0 + i * StepMs, 0, 0.0, 0.0, 0.0 };
+        while (i < values.size() && values.at(i) > 0.0) {
+            episode.peak = qMax(episode.peak, values.at(i));
+            episode.exposure += values.at(i) * StepMs / HourMs;
+            ++i;
+        }
+        episode.end = t0 + i * StepMs;
+        for (const Intake &intake : intakes) {
+            if (intake.start >= boundary && intake.start < episode.end)
+                episode.grams += intake.grams;
+        }
+        boundary = episode.end;
+        episodes.append(episode);
+    }
+    return episodes;
+}
+
 BloodAlcohol::BloodAlcohol(Profile *profile, DrinkLog *log, QObject *parent)
     : QObject(parent)
     , m_profile(profile)
@@ -107,6 +137,10 @@ void BloodAlcohol::update()
     m_graphStart = QDateTime();
     m_graphEnd = QDateTime();
     m_samples.clear();
+    m_exposure = 0.0;
+    m_exposureTotal = 0.0;
+    m_episodes.clear();
+    m_coveredFrom = -1;
 
     // Kilograms of blood equivalent, grams in the body divided by this is per mille
     const double distribution = m_profile->bodyWater() / BloodWaterFraction;
@@ -119,6 +153,15 @@ void BloodAlcohol::update()
 
     const qint64 t0 = startOf(intakes);
     const QVector<double> values = simulate(intakes, t0, nowMs, distribution);
+    m_coveredFrom = t0;
+    m_episodes = findEpisodes(values, t0, intakes);
+    for (const Episode &episode : m_episodes) {
+        if (episode.start <= nowMs && episode.end > nowMs) {
+            m_exposureTotal = episode.exposure;
+            for (qint64 i = (episode.start - t0) / StepMs; i <= (nowMs - t0) / StepMs && i < values.size(); ++i)
+                m_exposure += values.at(int(i)) * StepMs / HourMs;
+        }
+    }
     qint64 lastNonZeroMs = 0;
     for (int i = 0; i < values.size(); ++i) {
         if (values.at(i) > 0.0)
@@ -160,10 +203,28 @@ void BloodAlcohol::update()
     }
     m_graphStart = QDateTime::fromMSecsSinceEpoch(startMs);
     m_graphEnd = QDateTime::fromMSecsSinceEpoch(endMs);
+    m_hasAlcohol = true;
     emit changed();
 }
 
-double BloodAlcohol::peakWithDrink(double grams, qint64 durationMs) const
+double BloodAlcohol::peakWithDrink(double grams, qint64 durationMs, qint64 delayMs) const
+{
+    const double distribution = m_profile->bodyWater() / BloodWaterFraction;
+    if (distribution <= 0.0)
+        return 0.0;
+    const qint64 nowMs = QDateTime::currentMSecsSinceEpoch();
+    QVector<Intake> intakes = collectIntakes(m_log, nowMs);
+    const qint64 startMs = nowMs + delayMs;
+    intakes.append({ startMs, startMs + durationMs, grams });
+    const qint64 t0 = startOf(intakes);
+    const QVector<double> values = simulate(intakes, t0, startMs, distribution);
+    double peak = 0.0;
+    for (int i = int((startMs - t0) / StepMs); i < values.size(); ++i)
+        peak = qMax(peak, values.at(i));
+    return peak;
+}
+
+double BloodAlcohol::exposureWithDrink(double grams, qint64 durationMs) const
 {
     const double distribution = m_profile->bodyWater() / BloodWaterFraction;
     if (distribution <= 0.0)
@@ -173,15 +234,49 @@ double BloodAlcohol::peakWithDrink(double grams, qint64 durationMs) const
     intakes.append({ nowMs, nowMs + durationMs, grams });
     const qint64 t0 = startOf(intakes);
     const QVector<double> values = simulate(intakes, t0, nowMs, distribution);
-    double peak = 0.0;
-    for (int i = int((nowMs - t0) / StepMs); i < values.size(); ++i)
-        peak = qMax(peak, values.at(i));
-    return peak;
+    for (const Episode &episode : findEpisodes(values, t0, intakes)) {
+        if (episode.end > nowMs)
+            return episode.exposure;
+    }
+    return 0.0;
+}
+
+double BloodAlcohol::levelAt(const QDateTime &time) const
+{
+    const double distribution = m_profile->bodyWater() / BloodWaterFraction;
+    const qint64 nowMs = QDateTime::currentMSecsSinceEpoch();
+    const QVector<Intake> intakes = collectIntakes(m_log, nowMs);
+    if (distribution <= 0.0 || intakes.isEmpty())
+        return 0.0;
+    const qint64 t0 = startOf(intakes);
+    const QVector<double> values = simulate(intakes, t0, nowMs, distribution);
+    const qint64 i = (time.toMSecsSinceEpoch() - t0) / StepMs;
+    return i >= 0 && i < values.size() ? values.at(int(i)) : 0.0;
+}
+
+QDateTime BloodAlcohol::soberAfter(const QDateTime &from) const
+{
+    const double distribution = m_profile->bodyWater() / BloodWaterFraction;
+    const qint64 nowMs = QDateTime::currentMSecsSinceEpoch();
+    const QVector<Intake> intakes = collectIntakes(m_log, nowMs);
+    if (distribution <= 0.0 || intakes.isEmpty())
+        return from;
+    const qint64 t0 = startOf(intakes);
+    const QVector<double> values = simulate(intakes, t0, nowMs, distribution);
+    bool risen = false;
+    for (int i = qMax(0, int((from.toMSecsSinceEpoch() - t0) / StepMs)); i < values.size(); ++i) {
+        if (values.at(i) > 0.0)
+            risen = true;
+        else if (risen)
+            return QDateTime::fromMSecsSinceEpoch(t0 + i * StepMs);
+    }
+    return risen ? QDateTime::fromMSecsSinceEpoch(t0 + (values.size() - 1) * StepMs) : from;
 }
 
 // A flat line around now, so the graph is there before the first drink
 void BloodAlcohol::showEmptyGraph(qint64 nowMs)
 {
+    m_hasAlcohol = false;
     m_samples = QVariantList() << 0.0 << 0.0;
     m_graphStart = QDateTime::fromMSecsSinceEpoch(nowMs - EmptyHistoryMs);
     m_graphEnd = QDateTime::fromMSecsSinceEpoch(nowMs + EmptyAheadMs);

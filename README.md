@@ -1,7 +1,7 @@
 # Peaked
 
 An alcohol tracker for Sailfish OS that learns how you feel at different
-levels and tells you whether another drink is a good idea.
+levels. It never recommends a drink, it shows where another one would take you.
 
 - Blood alcohol in per mille, estimated from height, weight, age and sex, with
   a graph of the evening so far and where it is heading
@@ -9,9 +9,16 @@ levels and tells you whether another drink is a good idea.
 - Drink presets with a photo, prefilled from Open Food Facts, picked from the
   gallery or taken with the camera
 - Asks how you feel every 30 minutes, from a notification or in the app
-- Advice on another drink, from how you felt at the level it would take you to
-- Cover with the current level, time left until sober, the advice and buttons
-  to finish or start a drink
+- How you usually feel at the level another drink would take you to, from your
+  moods tonight and on earlier evenings, with older moods counting less
+- How long a glass of water first keeps you at a level you usually feel good at,
+  and when it is better to stop for tonight
+- Exposure, the area under the curve in ‰·h, so far and until sober
+- Asks the next morning how you feel, from a notification or in the app, and
+  learns from which exposure your mornings are usually rough
+- Cover with the current level, time left until sober, tonight's exposure against
+  the one your mornings get rough from, the hint and buttons to finish or start
+  a drink
 
 The estimate uses the Watson formula for body water and a Widmark style model
 with absorption from the stomach and a fixed burn rate of 0.15 ‰ per hour.

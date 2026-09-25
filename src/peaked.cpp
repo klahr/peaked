@@ -12,6 +12,7 @@
 #include "presetstore.h"
 #include "productsearch.h"
 #include "profile.h"
+#include "sessionlog.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,12 +32,14 @@ int main(int argc, char *argv[])
     BloodAlcohol bloodAlcohol(&profile, &drinkLog);
     MoodLog moodLog(&bloodAlcohol);
     Advisor advisor(&bloodAlcohol, &drinkLog, &moodLog);
+    SessionLog sessionLog(&bloodAlcohol);
 
     // The mood notification buttons call in here. Sailjail lets the app own
     // its OrganizationName.ApplicationName.
     QDBusConnection bus = QDBusConnection::sessionBus();
     bus.registerService(QStringLiteral("rs.r8.peaked"));
     bus.registerObject(QStringLiteral("/rs/r8/peaked"), &moodLog, QDBusConnection::ExportScriptableSlots);
+    bus.registerObject(QStringLiteral("/rs/r8/peaked/morning"), &sessionLog, QDBusConnection::ExportScriptableSlots);
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     view->rootContext()->setContextProperty(QStringLiteral("profile"), &profile);
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
     view->rootContext()->setContextProperty(QStringLiteral("drinkLog"), &drinkLog);
     view->rootContext()->setContextProperty(QStringLiteral("bloodAlcohol"), &bloodAlcohol);
     view->rootContext()->setContextProperty(QStringLiteral("moodLog"), &moodLog);
+    view->rootContext()->setContextProperty(QStringLiteral("sessionLog"), &sessionLog);
     view->rootContext()->setContextProperty(QStringLiteral("advisor"), &advisor);
     view->setSource(SailfishApp::pathToMainQml());
     view->show();
