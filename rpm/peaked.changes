@@ -1,3 +1,12 @@
+* Sat Oct 03 2026 Joachim Klahr <klahr@r8.rs> 0.2.0-1
+- Set the start time when starting a drink, for one you forgot to log
+- Edit drinks that are not finished yet
+- A setting to turn off the mood prompts every 30 minutes
+- Moods are learned against the highest level of the evening so far, so
+  feeling bad on the way down counts against how high it went
+- Moods in the graph follow the curve when a drink is edited, and their
+  levels are recalculated so the advice follows too
+
 * Fri Sep 25 2026 Joachim Klahr <klahr@r8.rs> 0.1.0-1
 - First release
 - Blood alcohol estimate in per mille from height, weight, age and sex

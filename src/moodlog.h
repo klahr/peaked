@@ -10,12 +10,14 @@
 
 class BloodAlcohol;
 
-// How the user felt, each with the estimated per mille at the time
+// How the user felt, each with the highest estimated per mille of the evening
+// so far. Feeling bad on the way down is from how high it went, not from the
+// lower level at the time.
 class MoodLog : public QObject
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "rs.r8.peaked")
-    // Maps with time in milliseconds since the epoch, mood and perMille
+    // Maps with time in milliseconds since the epoch, mood and peak
     Q_PROPERTY(QVariantList entries READ entries NOTIFY changed)
     Q_PROPERTY(QDateTime lastRecorded READ lastRecorded NOTIFY changed)
     // False for a while after each recording
@@ -32,7 +34,7 @@ public:
     struct Entry {
         QDateTime time;
         Mood mood;
-        double perMille;
+        double peak;
     };
 
     explicit MoodLog(BloodAlcohol *bloodAlcohol, QObject *parent = nullptr);
@@ -43,8 +45,8 @@ public:
     bool canRecord() const;
 
     Q_INVOKABLE void record(Mood mood);
-    // After a drink was removed, for the moods from while it was in the blood.
-    // Their per mille is taken again from the drinks left, a mood with no
+    // After a drink was removed or edited, for the moods from while it was in the blood.
+    // Their peak is taken again from the drinks left, a mood with no
     // alcohol left at its time is removed.
     Q_INVOKABLE void recalculateBetween(const QDateTime &from, const QDateTime &to);
 

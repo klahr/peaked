@@ -15,6 +15,8 @@ class Profile : public QObject
     Q_PROPERTY(bool configured READ configured NOTIFY changed)
     // Per mille where the graph draws its limit line
     Q_PROPERTY(double limit READ limit NOTIFY changed)
+    // Whether to ask how the user feels every 30 minutes while drinking
+    Q_PROPERTY(bool moodReminders READ moodReminders NOTIFY changed)
 
 public:
     enum Sex {
@@ -31,8 +33,9 @@ public:
     Sex sex() const;
     bool configured() const;
     double limit() const;
+    bool moodReminders() const;
 
-    Q_INVOKABLE void save(int height, int weight, int age, Sex sex, double limit);
+    Q_INVOKABLE void save(int height, int weight, int age, Sex sex, double limit, bool moodReminders);
 
     // Total body water in liters from the Watson formula, zero until configured
     double bodyWater() const;

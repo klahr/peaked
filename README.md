@@ -8,9 +8,13 @@ levels. It never recommends a drink, it shows where another one would take you.
 - When you will be sober, and a limit line in the graph, 0.2 ‰ by default
 - Drink presets with a photo, prefilled from Open Food Facts, picked from the
   gallery or taken with the camera
-- Asks how you feel every 30 minutes, from a notification or in the app
+- Start a drink now or at an earlier time, and edit it while drinking or after
+- Asks how you feel every 30 minutes, from a notification or in the app, which
+  can be turned off in the settings
 - How you usually feel at the level another drink would take you to, from your
-  moods tonight and on earlier evenings, with older moods counting less
+  moods tonight and on earlier evenings, with older moods counting less. A mood
+  counts at the highest level of the evening so far, feeling bad on the way
+  down is from how high it went
 - How long a glass of water first keeps you at a level you usually feel good at,
   and when it is better to stop for tonight
 - Exposure, the area under the curve in ‰·h, so far and until sober

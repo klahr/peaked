@@ -26,7 +26,7 @@ QVariantList MoodLog::entries() const
         QVariantMap map;
         map[QStringLiteral("time")] = double(entry.time.toMSecsSinceEpoch());
         map[QStringLiteral("mood")] = int(entry.mood);
-        map[QStringLiteral("perMille")] = entry.perMille;
+        map[QStringLiteral("peak")] = entry.peak;
         list.append(map);
     }
     return list;
@@ -47,7 +47,8 @@ void MoodLog::record(Mood mood)
     if (!canRecord())
         return;
     m_bloodAlcohol->update();
-    m_moods.append({ QDateTime::currentDateTime(), mood, m_bloodAlcohol->current() });
+    const QDateTime now = QDateTime::currentDateTime();
+    m_moods.append({ now, mood, qMax(m_bloodAlcohol->current(), m_bloodAlcohol->peakUntil(now)) });
     emit changed();
     emit canRecordChanged();
     startCooldown();
@@ -61,9 +62,9 @@ void MoodLog::recalculateBetween(const QDateTime &from, const QDateTime &to)
         if (m_moods.at(i).time < from || m_moods.at(i).time > to)
             continue;
         touched = true;
-        const double level = m_bloodAlcohol->levelAt(m_moods.at(i).time);
-        if (level > 0.0)
-            m_moods[i].perMille = level;
+        const QDateTime &time = m_moods.at(i).time;
+        if (m_bloodAlcohol->levelAt(time) > 0.0)
+            m_moods[i].peak = m_bloodAlcohol->peakUntil(time);
         else
             m_moods.removeAt(i);
     }
@@ -93,7 +94,8 @@ void MoodLog::load()
         entry.time = QDateTime::fromMSecsSinceEpoch(m_settings.value(QStringLiteral("time")).toLongLong());
         const int mood = m_settings.value(QStringLiteral("mood")).toInt();
         entry.mood = mood == Bad ? Bad : mood == Ok ? Ok : Good;
-        entry.perMille = m_settings.value(QStringLiteral("perMille")).toDouble();
+        // Stored under its old name, moods from before were at the level at the time
+        entry.peak = m_settings.value(QStringLiteral("perMille")).toDouble();
         m_moods.append(entry);
     }
     m_settings.endArray();
@@ -108,7 +110,7 @@ void MoodLog::save()
         m_settings.setArrayIndex(i);
         m_settings.setValue(QStringLiteral("time"), entry.time.toMSecsSinceEpoch());
         m_settings.setValue(QStringLiteral("mood"), int(entry.mood));
-        m_settings.setValue(QStringLiteral("perMille"), entry.perMille);
+        m_settings.setValue(QStringLiteral("perMille"), entry.peak);
     }
     m_settings.endArray();
     m_settings.sync();

@@ -30,47 +30,52 @@
 <context>
     <name>DrinkDialog</name>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="60"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="74"/>
         <source>Edit drink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="66"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="80"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="75"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="89"/>
         <source>Size in ml</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="86"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="100"/>
         <source>Alcohol in %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="95"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="109"/>
         <source>Started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="108"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="122"/>
         <source>Start time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="122"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="137"/>
         <source>Finish time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="124"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="139"/>
         <source>%1, next day</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/DrinkDialog.qml" line="141"/>
+        <location filename="../qml/pages/DrinkDialog.qml" line="156"/>
+        <source>The drink can not start in the future</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/DrinkDialog.qml" line="166"/>
         <source>The drink can not finish in the future</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,22 +240,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="275"/>
+        <location filename="../qml/pages/MainPage.qml" line="274"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="279"/>
+        <location filename="../qml/pages/MainPage.qml" line="278"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="321"/>
+        <location filename="../qml/pages/MainPage.qml" line="320"/>
         <source>Drinking since %1, tap to finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="322"/>
+        <location filename="../qml/pages/MainPage.qml" line="321"/>
         <source>%1 – %2 · %3 · %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -352,47 +357,57 @@
 <context>
     <name>PresetsPage</name>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="20"/>
+        <location filename="../qml/pages/PresetsPage.qml" line="25"/>
         <source>Start drink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="20"/>
+        <location filename="../qml/pages/PresetsPage.qml" line="25"/>
         <source>Presets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="25"/>
-        <source>Add preset</source>
+        <location filename="../qml/pages/PresetsPage.qml" line="30"/>
+        <source>Start time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="32"/>
-        <source>No presets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="33"/>
-        <source>Pull down to add one</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="42"/>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="46"/>
-        <source>Duplicate</source>
+        <location filename="../qml/pages/PresetsPage.qml" line="31"/>
+        <source>Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/PresetsPage.qml" line="50"/>
+        <source>Add preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="57"/>
+        <source>No presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="58"/>
+        <source>Pull down to add one</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="67"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="71"/>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PresetsPage.qml" line="75"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PresetsPage.qml" line="101"/>
+        <location filename="../qml/pages/PresetsPage.qml" line="129"/>
         <source>Photos from Open Food Facts, CC BY-SA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -481,7 +496,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsDialog.qml" line="97"/>
+        <location filename="../qml/pages/SettingsDialog.qml" line="95"/>
+        <source>Ask how I feel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsDialog.qml" line="96"/>
+        <source>A notification every 30 minutes while drinking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsDialog.qml" line="104"/>
         <source>Blood alcohol is only an estimate. Never use it to decide whether you can drive.</source>
         <translation type="unfinished"></translation>
     </message>

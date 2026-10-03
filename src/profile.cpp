@@ -7,6 +7,7 @@ static const char WeightKey[] = "profile/weight";
 static const char AgeKey[] = "profile/age";
 static const char SexKey[] = "profile/sex";
 static const char LimitKey[] = "graph/limit";
+static const char MoodRemindersKey[] = "mood/reminders";
 
 Profile::Profile(QObject *parent)
     : QObject(parent)
@@ -47,13 +48,19 @@ double Profile::limit() const
     return m_settings.value(QLatin1String(LimitKey), 0.2).toDouble();
 }
 
-void Profile::save(int height, int weight, int age, Sex sex, double limit)
+bool Profile::moodReminders() const
+{
+    return m_settings.value(QLatin1String(MoodRemindersKey), true).toBool();
+}
+
+void Profile::save(int height, int weight, int age, Sex sex, double limit, bool moodReminders)
 {
     m_settings.setValue(QLatin1String(HeightKey), height);
     m_settings.setValue(QLatin1String(WeightKey), weight);
     m_settings.setValue(QLatin1String(AgeKey), age);
     m_settings.setValue(QLatin1String(SexKey), static_cast<int>(sex));
     m_settings.setValue(QLatin1String(LimitKey), limit);
+    m_settings.setValue(QLatin1String(MoodRemindersKey), moodReminders);
     m_settings.sync();
     emit changed();
 }

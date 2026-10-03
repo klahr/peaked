@@ -67,7 +67,7 @@ void Advisor::update()
     double totalWeight = 0.0;
     double highest = 0.0;
     for (const MoodLog::Entry &entry : m_moods->moods()) {
-        if (qAbs(entry.perMille - m_nextPeak) <= Window) {
+        if (qAbs(entry.peak - m_nextPeak) <= Window) {
             switch (entry.mood) {
             case MoodLog::Good: ++m_goodCount; break;
             case MoodLog::Ok: ++m_okCount; break;
@@ -76,13 +76,13 @@ void Advisor::update()
         }
         const double weight = recencyWeight(entry.time, now);
         const double score = entry.mood == MoodLog::Good ? 1.0 : entry.mood == MoodLog::Bad ? -1.0 : 0.0;
-        const int index = int(entry.perMille / BinSize);
+        const int index = int(entry.peak / BinSize);
         ScoreBin &bin = bins[index];
         bin.index = index;
         bin.score = (bin.score * bin.weight + score * weight) / (bin.weight + weight);
         bin.weight += weight;
         totalWeight += weight;
-        highest = qMax(highest, entry.perMille);
+        highest = qMax(highest, entry.peak);
     }
 
     if (m_nextPeak > 0.0 && totalWeight >= MinimumWeight) {

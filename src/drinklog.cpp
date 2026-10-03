@@ -81,18 +81,24 @@ QHash<int, QByteArray> DrinkLog::roleNames() const
     return roles;
 }
 
-void DrinkLog::startDrink(const QString &name, double volume, double abv, const QString &image)
+void DrinkLog::startDrink(const QString &name, double volume, double abv, const QString &image,
+                          const QDateTime &started)
 {
+    const QDateTime now = QDateTime::currentDateTime();
     Drink drink;
     drink.id = newId();
     drink.name = name;
     drink.volume = volume;
     drink.abv = abv;
     drink.image = image;
-    drink.started = QDateTime::currentDateTime();
+    drink.started = started.isValid() && started < now ? started : now;
 
-    beginInsertRows(QModelIndex(), 0, 0);
-    m_drinks.prepend(drink);
+    // Keep newest first when started before other drinks
+    int row = 0;
+    while (row < m_drinks.size() && m_drinks.at(row).started > drink.started)
+        ++row;
+    beginInsertRows(QModelIndex(), row, row);
+    m_drinks.insert(row, drink);
     endInsertRows();
     prune();
     emit countChanged();
@@ -126,7 +132,7 @@ void DrinkLog::repeatLatestDrink()
     if (m_drinks.isEmpty())
         return;
     const Drink latest = m_drinks.first();
-    startDrink(latest.name, latest.volume, latest.abv, latest.image);
+    startDrink(latest.name, latest.volume, latest.abv, latest.image, QDateTime::currentDateTime());
 }
 
 void DrinkLog::removeDrink(const QString &drinkId)
@@ -153,7 +159,8 @@ void DrinkLog::updateDrink(const QString &drinkId, const QString &name, double v
     drink.volume = volume;
     drink.abv = abv;
     drink.started = started;
-    drink.finished = finished;
+    if (drink.finished.isValid())
+        drink.finished = finished;
     m_drinks[row] = drink;
     emit dataChanged(index(row), index(row));
 

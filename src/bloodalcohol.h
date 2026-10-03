@@ -67,6 +67,8 @@ public:
     Q_INVOKABLE QDateTime soberAfter(const QDateTime &from) const;
     // Per mille at time from the drinks now in the log
     double levelAt(const QDateTime &time) const;
+    // Highest per mille from when the blood alcohol last rose from zero up to time
+    double peakUntil(const QDateTime &time) const;
 
 public slots:
     void update();

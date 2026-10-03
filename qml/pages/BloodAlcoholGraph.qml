@@ -13,7 +13,7 @@ Canvas {
     property date nowTime
     property real peak
     property real limit
-    // How the user felt, drawn at the time and per mille it was recorded
+    // How the user felt, drawn on the curve at the time it was recorded
     property var moods: []
     // Drawn as glasses along the bottom where each drink was started
     property var drinks: []
@@ -46,6 +46,11 @@ Canvas {
 
         function xAt(ms) { return left + (ms - start) / span * plotWidth }
         function yAt(value) { return top + plotHeight * (1 - value / maxValue) }
+        function sampleAt(ms) {
+            var position = Math.max(0, Math.min(1, (ms - start) / span)) * (samples.length - 1)
+            var i = Math.min(Math.floor(position), samples.length - 2)
+            return samples[i] + (samples[i + 1] - samples[i]) * (position - i)
+        }
 
         ctx.font = Theme.fontSizeExtraSmall + "px " + Theme.fontFamily
         ctx.lineWidth = 1
@@ -152,7 +157,7 @@ Canvas {
             if (mood.time < start || mood.time > start + span)
                 continue
             ctx.fillStyle = Display.moodColor(mood.mood)
-            ctx.fillText(Display.moodEmoji(mood.mood), xAt(mood.time), yAt(Math.min(mood.perMille, maxValue)))
+            ctx.fillText(Display.moodEmoji(mood.mood), xAt(mood.time), yAt(Math.min(sampleAt(mood.time), maxValue)))
         }
     }
 }

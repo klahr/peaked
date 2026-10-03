@@ -7,6 +7,8 @@ Page {
 
     // Tapping a preset starts a drink of it instead of editing it
     property bool picking
+    // When the picked drink was started, invalid for now
+    property date started: new Date(NaN)
 
     allowedOrientations: Orientation.All
 
@@ -16,8 +18,31 @@ Page {
         anchors.fill: parent
         model: presetStore
 
-        header: PageHeader {
-            title: page.picking ? qsTr("Start drink") : qsTr("Presets")
+        header: Column {
+            width: listView.width
+
+            PageHeader {
+                title: page.picking ? qsTr("Start drink") : qsTr("Presets")
+            }
+
+            ValueButton {
+                visible: page.picking
+                label: qsTr("Start time")
+                value: isNaN(page.started.getTime()) ? qsTr("Now") : Display.time(page.started)
+                onClicked: {
+                    var from = isNaN(page.started.getTime()) ? new Date() : page.started
+                    var picker = pageStack.push("Sailfish.Silica.TimePickerDialog",
+                                                { hour: from.getHours(), minute: from.getMinutes() })
+                    picker.accepted.connect(function() {
+                        // A time later than now is from yesterday
+                        var date = new Date()
+                        date.setHours(picker.hour, picker.minute, 0, 0)
+                        if (date.getTime() > Date.now())
+                            date.setDate(date.getDate() - 1)
+                        page.started = date
+                    })
+                }
+            }
         }
 
         PullDownMenu {
@@ -56,7 +81,10 @@ Page {
             }
             onClicked: {
                 if (page.picking) {
-                    drinkLog.startDrink(model.name, model.volume, model.abv, model.image)
+                    drinkLog.startDrink(model.name, model.volume, model.abv, model.image, page.started)
+                    // Moods since an earlier start get the per mille with this drink
+                    if (!isNaN(page.started.getTime()))
+                        moodLog.recalculateBetween(page.started, new Date())
                     pageStack.pop()
                 } else {
                     pageStack.push(Qt.resolvedUrl("PresetDialog.qml"), { presetId: model.presetId })

@@ -26,7 +26,7 @@ ApplicationWindow {
     // Asks how the user feels every 30 minutes while there is alcohol in the blood.
     // Wakes the phone for it, a plain timer would not run while it sleeps.
     BackgroundJob {
-        enabled: profile.configured && (bloodAlcohol.current > 0 || drinkLog.activeCount > 0)
+        enabled: profile.configured && profile.moodReminders && (bloodAlcohol.current > 0 || drinkLog.activeCount > 0)
         frequency: BackgroundJob.ThirtyMinutes
         onTriggered: {
             if (!moodLog.canRecord) {
@@ -105,6 +105,14 @@ ApplicationWindow {
                 morningNotification.close()
         }
         onActivateRequested: window.activate()
+    }
+
+    Connections {
+        target: profile
+        onChanged: {
+            if (!profile.moodReminders)
+                moodNotification.close()
+        }
     }
 
     Connections {

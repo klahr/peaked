@@ -15,7 +15,7 @@ Dialog {
 
     onAccepted: profile.save(parseInt(heightField.text), parseInt(weightField.text), parseInt(ageField.text),
                              sexComboBox.currentIndex === 1 ? Profile.Female : Profile.Male,
-                             parseDecimal(limitField.text))
+                             parseDecimal(limitField.text), moodRemindersSwitch.checked)
 
     SilicaFlickable {
         anchors.fill: parent
@@ -88,6 +88,13 @@ Dialog {
                 validator: RegExpValidator { regExp: /^\d([.,]\d{1,2})?$/ }
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
+            }
+
+            TextSwitch {
+                id: moodRemindersSwitch
+                text: qsTr("Ask how I feel")
+                description: qsTr("A notification every 30 minutes while drinking")
+                checked: profile.moodReminders
             }
 
             Label {

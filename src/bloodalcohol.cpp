@@ -254,6 +254,22 @@ double BloodAlcohol::levelAt(const QDateTime &time) const
     return i >= 0 && i < values.size() ? values.at(int(i)) : 0.0;
 }
 
+double BloodAlcohol::peakUntil(const QDateTime &time) const
+{
+    const double distribution = m_profile->bodyWater() / BloodWaterFraction;
+    const qint64 nowMs = QDateTime::currentMSecsSinceEpoch();
+    const QVector<Intake> intakes = collectIntakes(m_log, nowMs);
+    if (distribution <= 0.0 || intakes.isEmpty())
+        return 0.0;
+    const qint64 t0 = startOf(intakes);
+    const QVector<double> values = simulate(intakes, t0, nowMs, distribution);
+    double peak = 0.0;
+    for (int i = qMin(int((time.toMSecsSinceEpoch() - t0) / StepMs), values.size() - 1);
+         i >= 0 && values.at(i) > 0.0; --i)
+        peak = qMax(peak, values.at(i));
+    return peak;
+}
+
 QDateTime BloodAlcohol::soberAfter(const QDateTime &from) const
 {
     const double distribution = m_profile->bodyWater() / BloodWaterFraction;

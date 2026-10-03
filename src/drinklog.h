@@ -51,12 +51,15 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE void startDrink(const QString &name, double volume, double abv, const QString &image);
+    // A start time in the future is taken as now
+    Q_INVOKABLE void startDrink(const QString &name, double volume, double abv, const QString &image,
+                                const QDateTime &started);
     Q_INVOKABLE void finishDrink(const QString &drinkId);
     // For the cover, which has no room to pick a drink
     Q_INVOKABLE void finishLatestDrink();
     Q_INVOKABLE void repeatLatestDrink();
     Q_INVOKABLE void removeDrink(const QString &drinkId);
+    // A drink not yet finished stays unfinished whatever finished is
     Q_INVOKABLE void updateDrink(const QString &drinkId, const QString &name, double volume, double abv,
                                  const QDateTime &started, const QDateTime &finished);
     Q_INVOKABLE QVariantMap drink(const QString &drinkId) const;

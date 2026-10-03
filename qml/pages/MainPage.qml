@@ -271,7 +271,6 @@ Page {
                     onClicked: drinkLog.finishDrink(model.drinkId)
                 }
                 MenuItem {
-                    visible: !model.active
                     text: qsTr("Edit")
                     onClicked: pageStack.push(Qt.resolvedUrl("DrinkDialog.qml"), { drinkId: model.drinkId })
                 }

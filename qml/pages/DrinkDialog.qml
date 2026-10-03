@@ -6,6 +6,8 @@ Dialog {
     id: dialog
 
     property string drinkId
+    // Not finished yet, only its start can be changed
+    property bool active
     property date started
     property int finishHour
     property int finishMinute
@@ -29,10 +31,19 @@ Dialog {
     canAccept: nameField.text.trim().length > 0 && volumeField.acceptableInput && abvField.acceptableInput
                && parseDecimal(volumeField.text) > 0 && parseDecimal(abvField.text) > 0
                && parseDecimal(abvField.text) <= 100
-               && finished.getTime() <= Date.now()
+               && (active ? started.getTime() <= Date.now() : finished.getTime() <= Date.now())
 
-    onAccepted: drinkLog.updateDrink(drinkId, nameField.text, parseInt(volumeField.text),
-                                     parseDecimal(abvField.text), started, finished)
+    onAccepted: {
+        // Moods from while either the old or the new drink was in the blood get
+        // the per mille of the drinks as they are now
+        var oldStarted = drinkLog.drink(drinkId).started
+        var oldSober = bloodAlcohol.soberAfter(oldStarted)
+        drinkLog.updateDrink(drinkId, nameField.text, parseInt(volumeField.text),
+                             parseDecimal(abvField.text), started, finished)
+        var newSober = bloodAlcohol.soberAfter(started)
+        moodLog.recalculateBetween(oldStarted < started ? oldStarted : started,
+                                   oldSober > newSober ? oldSober : newSober)
+    }
 
     Component.onCompleted: {
         var drink = drinkLog.drink(drinkId)
@@ -42,8 +53,11 @@ Dialog {
         var start = new Date(drink.started.getTime())
         start.setSeconds(0, 0)
         started = start
-        finishHour = drink.finished.getHours()
-        finishMinute = drink.finished.getMinutes()
+        active = isNaN(drink.finished.getTime())
+        if (!active) {
+            finishHour = drink.finished.getHours()
+            finishMinute = drink.finished.getMinutes()
+        }
     }
 
     SilicaFlickable {
@@ -119,6 +133,7 @@ Dialog {
             }
 
             ValueButton {
+                visible: !dialog.active
                 label: qsTr("Finish time")
                 value: dialog.finished.getDate() !== dialog.started.getDate()
                        ? qsTr("%1, next day").arg(Display.time(dialog.finished))
@@ -134,7 +149,17 @@ Dialog {
             }
 
             Label {
-                visible: dialog.finished.getTime() > Date.now()
+                visible: dialog.active && dialog.started.getTime() > Date.now()
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2 * x
+                wrapMode: Text.Wrap
+                text: qsTr("The drink can not start in the future")
+                color: Theme.errorColor
+                font.pixelSize: Theme.fontSizeSmall
+            }
+
+            Label {
+                visible: !dialog.active && dialog.finished.getTime() > Date.now()
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * x
                 wrapMode: Text.Wrap
